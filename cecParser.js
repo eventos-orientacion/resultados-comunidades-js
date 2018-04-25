@@ -23,7 +23,8 @@ CEC.Entry = function (obj) {
         region: "Región",
         class: "Corto",
         time: "Tiempo",
-        pos: "Pos",//TODO Puesto
+        pos: "Puesto",
+        pos2: "Pos",
         points: "Puntos"
     };
     this.getRegion = function () {
@@ -40,7 +41,10 @@ CEC.Entry = function (obj) {
         return this[col.class]
     };
     this.getPosition = function () {
-        return this[col.pos];
+        if (this[col.pos]) {
+            return this[col.pos];
+        }
+        return this[col.pos2];
     };
     this.getStrHeader = function () {
         return col.number + d +
@@ -119,7 +123,6 @@ CEC.Summary = function () {
             };
         }
         var currentAgeGroup = currentRegion[row.getAgeGroup()];
-        console.log('getToSum', row);
         if (currentAgeGroup.sum < CEC.config.getToSum(row)) {
             currentAgeGroup.points += row.getPoints();
             currentAgeGroup.sum++;
@@ -178,7 +181,6 @@ CEC.Time = function (time) {
 }
 CEC.csvParser =  {
     init: function () {
-        CEC.config.setStage(CEC.$('#stage').value);
         CEC.$('#submit-parse').onclick = CEC.csvParser.start;
     },
     errors: {
@@ -221,6 +223,10 @@ CEC.csvParser =  {
         }
     },
     start: function(event) {
+        
+        console.log('Prueba', CEC.$('#stage').value);
+        CEC.config.setStage(CEC.$('#stage').value);
+
         var scope = CEC.csvParser;
         var Papa = window.Papa;
         if (event) {
@@ -275,105 +281,101 @@ var docReady = setInterval(function() {
 }, 1);
 
 CEC.config = {
-    "INDIVIDUAL": {
-        "12": {
-            "GRUPO": "CADETES",
-            "PUNTOS": "D"
-        },
-        "14": {
-            "GRUPO": "CADETES",
-            "PUNTOS": "D"
-        },
-        "16": {
-            "GRUPO": "CADETES",
-            "PUNTOS": "D"
-        },
-        "18A": {
-            "GRUPO": "JUNIOR",
-            "PUNTOS": "D"
-        },
-        "20A": {
-            "GRUPO": "JUNIOR",
-            "PUNTOS": "D"
-        },
-        "18/20B": {
-            "GRUPO": "JUNIOR",
-            "PUNTOS": "C"
-        },
-        "E": {
-            "GRUPO": "SENIOR",
-            "PUNTOS": "A"
-        },
-        "21A": {
-            "GRUPO": "SENIOR",
-            "PUNTOS": "B"
-        },
-        "21B": {
-            "GRUPO": "SENIOR",
-            "PUNTOS": "C"
-        },
-        "35A": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "D"
-        },
-        "35B": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "C"
-        },
-        "40": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "D"
-        },
-        "45": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "D"
-        },
-        "50": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "D"
-        },
-        "55": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "D"
-        },
-        "60": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "D"
-        },
-        "65": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "D"
-        },
+    "SENIOR": {
+        "GRUPO": "SENIOR",
+        "PUNTOS": "A"
     },
-    "RELEVOS": {
-        "SENIOR": {
-            "GRUPO": "SENIOR",
-            "PUNTOS": "A"
-        },
-        "INFANTIL": {
-            "GRUPO": "INFANTIL",
-            "PUNTOS": "B"
-        },
-        "CADETE": {
-            "GRUPO": "CADETE",
-            "PUNTOS": "B"
-        },
-        "JUNIOR": {
-            "GRUPO": "JUNIOR",
-            "PUNTOS": "B"
-        },
-        "VET A": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "B"
-        },
-        "VET B": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "B"
-        },
-        "VET C": {
-            "GRUPO": "VETERANOS",
-            "PUNTOS": "B"
-        }
+    "INFANTIL": {
+        "GRUPO": "INFANTIL",
+        "PUNTOS": "B"
+    },
+    "CADETE": {
+        "GRUPO": "CADETES",
+        "PUNTOS": "B"
+    },
+    "JUNIOR": {
+        "GRUPO": "JUNIOR",
+        "PUNTOS": "B"
+    },
+    "VET A": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "B"
+    },
+    "VET B": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "B"
+    },
+    "VET C": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "B"
+    },
+    "12": {
+        "GRUPO": "CADETES",
+        "PUNTOS": "D"
+    },
+    "14": {
+        "GRUPO": "CADETES",
+        "PUNTOS": "D"
+    },
+    "16": {
+        "GRUPO": "CADETES",
+        "PUNTOS": "D"
+    },
+    "18A": {
+        "GRUPO": "JUNIOR",
+        "PUNTOS": "D"
+    },
+    "20A": {
+        "GRUPO": "JUNIOR",
+        "PUNTOS": "D"
+    },
+    "18/20B": {
+        "GRUPO": "JUNIOR",
+        "PUNTOS": "C"
+    },
+    "E": {
+        "GRUPO": "SENIOR",
+        "PUNTOS": "A"
+    },
+    "21A": {
+        "GRUPO": "SENIOR",
+        "PUNTOS": "B"
+    },
+    "21B": {
+        "GRUPO": "SENIOR",
+        "PUNTOS": "C"
+    },
+    "35A": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "D"
+    },
+    "35B": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "C"
+    },
+    "40": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "D"
+    },
+    "45": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "D"
+    },
+    "50": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "D"
+    },
+    "55": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "D"
+    },
+    "60": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "D"
+    },
+    "65": {
+        "GRUPO": "VETERANOS",
+        "PUNTOS": "D"
     },
     "PUNTOS": {
         "INDIVIDUAL": {
@@ -398,27 +400,40 @@ CEC.config = {
         },
         "RELEVOS": {
             "CADETES": 5,
+            "INFANTIL": 5,
             "JUNIOR": 5,
             "VETERANOS": 5,
             "SENIOR": 5,
         },
     },
+    "RELEVOS": {
+        "SENIOR": {
+            "PUNTOS": "A"
+        },
+        "INFANTIL": {
+            "PUNTOS": "B"
+        },
+        "CADETE": {
+            "PUNTOS": "B"
+        },
+        "JUNIOR": {
+            "PUNTOS": "B"
+        },
+        "VETERANOS": {
+            "PUNTOS": "B"
+        }
+    },
     setStage: function (stage) {
         this._groups = this.GRUPOS[stage];
         this._points = this.PUNTOS[stage];
-        this._ages = this[stage];
-    },
-    getAge: function (age) {
-        return this._ages[age];
     },
     getPointsWinner: function (row) {
         var age = row.getAge();
-        if (!this.getAge(age)) {
-        console.log('winner', this.getAge(age), age);
+        if (!this[age]) {
             CEC.csvParser.errors.class[row.getClass()] = row.getClass();
             return 0;
         }
-        var pointGroup = this.getAge(age).PUNTOS;
+        var pointGroup = this[age].PUNTOS;
         return this._points[pointGroup];
     },
     getPoinsNoPosition: function () {
@@ -426,16 +441,16 @@ CEC.config = {
     },
     getAgeGroup: function (row) {
         var age = row.getAge();
-        if (!this.getAge(age)) {
-        console.log('getAgeGroup', this.getAge(age), age);
+        if (!this[age]) {
             CEC.csvParser.errors.class[row.getClass()] = row.getClass();
             return "INVALID"
         }
-        return this.getAge(age).GRUPO;
+        return this[age].GRUPO;
     },
     getToSum: function (row) {
         var age = row.getAgeGroup();
         if (!this._groups[age]) {
+            console.log('gggg', age, this._groups[age], this._groups, row);
             CEC.csvParser.errors.groups[row.getClass()] = row.getAgeGroup();
             return 0;
         }
