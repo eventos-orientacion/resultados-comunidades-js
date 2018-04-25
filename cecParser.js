@@ -281,6 +281,53 @@ var docReady = setInterval(function() {
 }, 1);
 
 CEC.config = {
+    setStage: function (stage) {
+        this._groups = this.GRUPOS[stage];
+        this._points = this.PUNTOS[stage];
+    },
+    getPointsWinner: function (row) {
+        var age = row.getAge();
+        if (!this[age]) {
+            age = row.getClass();
+            if (!this[age]) {
+                CEC.csvParser.errors.class[row.getClass()] = row.getClass();
+                return 0;
+            }
+        }
+        var pointGroup = this[age].PUNTOS;
+        return this._points[pointGroup];
+    },
+    getPoinsNoPosition: function () {
+        return this._points.DESC;
+    },
+    getAgeGroup: function (row) {
+        var age = row.getAge();
+        if (!this[age]) {
+            age = row.getClass();
+            if (!this[age]) {
+                CEC.csvParser.errors.class[row.getClass()] = row.getClass();
+                return "INVALID"
+            }
+        }
+        return this[age].GRUPO;
+    },
+    getToSum: function (row) {
+        var age = row.getAgeGroup();
+        var toRet = this._groups[age];
+        if (!toRet && toRet !== 0) {
+            console.log('getToSum', age, toRet, this._groups, row);
+            CEC.csvParser.errors.groups[row.getClass()] = row.getAgeGroup();
+            return 0;
+        }
+        return toRet;
+    },
+    getPossibleGroups: function () {
+        var groups = [];
+        for (var group in this._groups) {
+            groups.push(group);
+        }
+        return groups;
+    },
     "U-10": {
         "GRUPO": "NA",
         "PUNTOS": "NA"
@@ -445,52 +492,5 @@ CEC.config = {
         "VETERANOS": {
             "PUNTOS": "B"
         }
-    },
-    setStage: function (stage) {
-        this._groups = this.GRUPOS[stage];
-        this._points = this.PUNTOS[stage];
-    },
-    getPointsWinner: function (row) {
-        var age = row.getAge();
-        if (!this[age]) {
-            age = row.getClass();
-            if (!this[age]) {
-                CEC.csvParser.errors.class[row.getClass()] = row.getClass();
-                return 0;
-            }
-        }
-        var pointGroup = this[age].PUNTOS;
-        return this._points[pointGroup];
-    },
-    getPoinsNoPosition: function () {
-       return this._points.DESC;
-    },
-    getAgeGroup: function (row) {
-        var age = row.getAge();
-        if (!this[age]) {
-            age = row.getClass();
-            if (!this[age]) {
-                CEC.csvParser.errors.class[row.getClass()] = row.getClass();
-                return "INVALID"
-            }
-        }
-        return this[age].GRUPO;
-    },
-    getToSum: function (row) {
-        var age = row.getAgeGroup();
-        var toRet = this._groups[age];
-        if (!toRet && toRet !== 0) {
-            console.log('getToSum', age, toRet, this._groups, row);
-            CEC.csvParser.errors.groups[row.getClass()] = row.getAgeGroup();
-            return 0;
-        }
-        return toRet;
-    },
-    getPossibleGroups: function () {
-        var groups = [];
-        for (var group in this._groups) {
-            groups.push(group);
-        }
-       return groups;
     }
 };
