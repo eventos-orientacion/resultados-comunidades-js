@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<script src="https://rawgit.com/mholt/PapaParse/master/papaparse.js"></script>-->
+    <script src="./papaparse.js"></script>
+    <script src="./cecParser.js"></script>
+    <title>CEC2016</title>
+</head>
+<body>
+	<div>
+		<select id="stage">
+			<option type="radio" value="INDIVIDUAL">Individual</option>
+			<option type="radio" value="RELEVOS">Relevos</option>
+		</select>
+	<label for="files">Csv Data</label>
+	<input name="data[csvData]" id="files" type="file">
+	<input class="btn success" id="submit-parse" value="upload" type="submit">
+	</div>
+	<div>
+	  <label for="area-summary">Final</label>
+		<textarea id="area-summary" style="width: 100%; height: 100px;"></textarea>
+	</div>
+	<div>
+	  <label for="area-result">Paso 1</label>
+		<textarea id="area-result" style="width: 100%; height: 100px;"></textarea>
+	</div>
+	<div>
+	  <label for="area-errors">Errores</label>
+		<textarea id="area-errors" style="width: 100%; height: 50px;"></textarea>
+	</div>
+</body>
+</html>
