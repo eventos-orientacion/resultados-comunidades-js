@@ -3,8 +3,8 @@ Calculo de resultados por comunidades usando Javascript en un navegador de inter
 
 ## Instrucciones
 Este programa se ejecuta en cualquier navegador moderno (ha sido probado en Firefox 59). Para ejecutarlo sigue estos pasos:
+ + Arrastra el archivo index.html a la barra de direcciones del navegador (o pulsa este [enlace](https://eventos-orientacion.github.io/resultados-comunidades-js/index.html)).
  + Selecciona la opcion "individual" o "relevos" para el cálculo en carreras individuales o por relevos.
- + Arrastra el archivo index.html a la barra de direcciones del navegador.
  + Selecciona el csv exportado desde sportsoftware
  + Pulsa el botón "upload"
 
