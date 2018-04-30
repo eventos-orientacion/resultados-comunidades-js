@@ -6,7 +6,8 @@ CEC.$ = function (selector) {
 };
 CEC.Decimal = function (float) {
     var ret = '' + (Math.round(float * 100) / 100);
-    return ret.replace('.', ',');
+    var numberDecimal = ',';
+    return ret.replace('.', numberDecimal);
 };
 CEC.Entry = function (obj) {
     for (var i in obj) {
@@ -16,17 +17,7 @@ CEC.Entry = function (obj) {
     }
     
     var d = CEC.csvParser.config.delimiter;
-    var col = {
-        firstname: "Nombre",
-        lastname: "Apellidos",
-        number: "Dorsal",
-        region: "Región",
-        class: "Corto",
-        time: "Tiempo",
-        pos: "Puesto",
-        pos2: "Pos",
-        points: "Puntos"
-    };
+    var col = CEC.config.columns;
     this.getRegion = function () {
         return this[col.region];
     };
@@ -53,8 +44,8 @@ CEC.Entry = function (obj) {
             col.time + d +
             col.class + d +
             col.pos + d +
-            'Group' + d +
-            'Pts' + d;
+            col.group + d +
+            col.points + d;
     };
     this.toString = function () {
         var f = this;
@@ -66,7 +57,7 @@ CEC.Entry = function (obj) {
             f.getClass() + d +
             f.getPosition() + d +
             f.getAgeGroup() + d +
-            f.getPoints() + d;
+            CEC.Decimal(f.getPoints()) + d;
     };
     this.setAsWinner = function () {
         CEC.csvParser.winners[this.getClass()] = this;
@@ -85,6 +76,14 @@ CEC.Entry = function (obj) {
             return CEC.config.getPointsWinner(this);
         } else {
             var winner = this.getWinnerInClass();
+            if (!winner) {
+                if (!CEC.csvParser.errors.points) {
+                    CEC.csvParser.errors.points = [];
+                }
+                CEC.csvParser.errors.points.push(this.dorsal);
+                console.warn('Invalid winner', winner, this);
+                return 'null';
+            }
             // calculate points
             return winner.getTime().getSeconds() / this.getTime().getSeconds() * winner.getPoints();
         }
@@ -138,13 +137,19 @@ CEC.Summary = function () {
         var toRet = d;
         var categories = '';
         var regionSum = 0;
+        var colPoints = CEC.config.columns.points;
         ageGroups.forEach(function (ageGroup) {
-            toRet += ageGroup +'.sum' + d +
-                ageGroup +'.points' + d +
-                ageGroup +'.excluded' + d +
-                'Total';
+            toRet += ageGroup.toLowerCase() + d +
+                ageGroup + d +
+                ageGroup.toLowerCase() + d;
         });
-        toRet += newLine;
+        toRet += colPoints + newLine + d;
+        ageGroups.forEach(function (ageGroup) {
+            toRet += CEC.config.columns.sum + d +
+                colPoints + d +
+                CEC.config.columns.excluded + d;
+        });
+        toRet += CEC.config.columns.total + newLine;
         for (var region in s) {
             //console.log('psdfs', region, s[region]);
             categories = '';
@@ -187,15 +192,18 @@ CEC.csvParser =  {
         class: {},
         groups: {},
         toString: function () {
-            console.log('fffff', this);
             var string = '';
             for (var errType in this) {
+                var currString = '';
                 if (typeof this[errType] != 'function') {
-                    string += errType + ': ';
                     for (var err in this[errType]) {
-                        string += err + ', ';
+                        currString += err + ', ';
                     }
-                    string += "\n";
+                    if (currString) {
+                        string += errType + ': ';
+                        string += currString;
+                        string += "\n";
+                    }
                 }
             }
             return string;
@@ -205,7 +213,7 @@ CEC.csvParser =  {
     winners: {},
     config: {
         delimiter: ';',
-        newline: "\n",
+        newline: "\r\n",
         header: true,
         dynamicTyping: true,
         encoding: 'ISO-8859-15',
@@ -328,7 +336,34 @@ CEC.config = {
         }
         return groups;
     },
+    columns: {
+        firstname: "Nombre",
+        lastname: "Apellidos",
+        number: "Dorsal",
+        region: "Región",
+        class: "Corto",
+        time: "Tiempo",
+        pos: "Puesto",
+        pos2: "Pos",
+        group: "Group",
+        excluded: 'fuera',
+        sum: 'cant.',
+        total: 'TOTAL',
+        points: 'PUNTOS'
+    },
     "U-10": {
+        "GRUPO": "NA",
+        "PUNTOS": "NA"
+    },
+    "ABS.PAREJAS": {
+        "GRUPO": "NA",
+        "PUNTOS": "NA"
+    },
+    "INIC.EQUIPOS": {
+        "GRUPO": "NA",
+        "PUNTOS": "NA"
+    },
+    "M-PROM": {
         "GRUPO": "NA",
         "PUNTOS": "NA"
     },
@@ -399,6 +434,10 @@ CEC.config = {
     "E": {
         "GRUPO": "SENIOR",
         "PUNTOS": "A"
+    },
+    "21": {
+        "GRUPO": "NA",
+        "PUNTOS": "NA"
     },
     "21A": {
         "GRUPO": "SENIOR",
