@@ -33,6 +33,8 @@ Todos estos parámetros son facilmente modificables con un editor de texto.
 
 Exporta los resultados desde OE2010 y OS2010: `Results/Preliminary/Courses/Export`.
 
+El formato del archivo debe ser similar a `ejemplo.csv`
+
 Selecciona las opciones por defecto (csv; delimitador punto y coma `;` ; y delimitador de texto comillas dobles `"` ). Si el evento tiene más de una etapa, exporta una única etapa.
 
 Los archivos exportados se deben almacenar en la carpeta csv.
