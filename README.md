@@ -1,6 +1,8 @@
 # Resultados por comunidades en Javascript
 Calculo de resultados por comunidades usando Javascript en un navegador de internet (e.g Firefox). Diseñado para la realización de clasificaciones por comunidades autónomas en campeonatos de España de orientación, siguiendo la normativa FEDO y tras realizar el control de tiempos por sportsoftware.de
 
+Calculo de resultados individuales testeado en 2018 (CEO distancia media, resultados de relevos no testeado completamente)
+
 ## Instrucciones
 Este programa se ejecuta en cualquier navegador moderno (ha sido probado en Firefox 59). Para ejecutarlo sigue estos pasos:
  + Arrastra el archivo index.html a la barra de direcciones del navegador (o pulsa este [enlace](https://eventos-orientacion.github.io/resultados-comunidades-js/index.html)).
