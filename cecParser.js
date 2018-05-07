@@ -223,6 +223,14 @@ CEC.csvParser =  {
         skipEmptyLines: true,
         complete: function (res) {
             CEC.csvParser.result = res;
+            if (!res || !res.data || !res.data.length) {
+            	console.log('Empty result, check CEC.csvParser.config.newline', res, CEC.csvParser.config);
+            	CEC.csvParser.config.newline = "\n";
+            	console.log('Retrying with CEC.csvParser.config.newline', CEC.csvParser.config);
+            	CEC.csvParser.start();
+            	return null;
+            	
+            }
             console.log('Done.', res);
             CEC.csvParser.import.build();
         },
@@ -352,8 +360,8 @@ CEC.config = {
         points: 'PUNTOS'
     },
     "U-10": {
-        "GRUPO": "NA",
-        "PUNTOS": "NA"
+        "GRUPO": "CADETES",
+        "PUNTOS": "B"
     },
     "ABS.PAREJAS": {
         "GRUPO": "NA",

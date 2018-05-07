@@ -51,8 +51,8 @@ Es importante que los corredores fuera de concurso (por ejemplo, extranjeros) no
 
 
 ### Posibles errores
++ Probar con una versión actual de Firefox y abrir la consola de inspección (pulsar F12) para ver más errores.
 + Errores de `group` y `class` mostrados en el cuadro de errores. Estas categorías pueden no estr definidas con los nombres correctos en el objeto `CEC.config`.
-+ Aparicion de todos los valores como `undefined` o `NA`: Problemas con la definición de columnas (comprobar sus nombres con el objecto `col` en `CEC.Entry`). Puede ser que el exista un carácter invisible (`\r\n`) al final de la última columna del csv (para evitar esto añadir una columna con cualquier nombre en el csv). Los nombres de las columnas no deben contener comillas dobles `"`. 
++ Aparicion de todos los valores como `undefined` o `NA` o no mostrar ningún resultado despues de pulsar el botón de calcular: Problemas con la definición de columnas (comprobar sus nombres con el objecto `col` en `CEC.Entry`). Puede ser que el exista un carácter invisible (`\r\n`) al final de la última columna del csv (para evitar esto añadir una columna con cualquier nombre en el csv). Los nombres de las columnas no deben contener comillas dobles `"`. 
 + Los resultados aparecen en una única fila del csv. El carácter de final de línea debe ser `\r\n` (modificar el csv o `CEC.csvParser.config.newline` a `\n`)
 + Cálculo de puntuaciones muy alto o muy bajo: es posible que el formato de tiempos no sea el adecuado, este debe ser de MM:SS (ejemplo: 21:32 son 21 minutos 32 segundos). En ocasiones programas como Excel, pueden alterar los tiempos del csv (por ejemplo, si queden 21:32:00 serán tomados como 21 horas 32 minutos)
-+ Para ver más errores abrir la consola de inspección (pulsar F12)
