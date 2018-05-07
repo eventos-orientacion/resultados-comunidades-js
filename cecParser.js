@@ -36,6 +36,12 @@ CEC.Entry = function (obj) {
         }
         return this[col.pos2];
     };
+    this.getGroupPosition = function () {
+        if (this.summaryPos) {
+            return this.summaryPos;
+        }
+        return '';
+    };
     this.getStrHeader = function () {
         return col.number + d +
             col.firstname + d +
@@ -45,7 +51,8 @@ CEC.Entry = function (obj) {
             col.class + d +
             col.pos + d +
             col.group + d +
-            col.points + d;
+            col.points + d +
+            col.sumPos;
     };
     this.toString = function () {
         var f = this;
@@ -57,7 +64,8 @@ CEC.Entry = function (obj) {
             f.getClass() + d +
             f.getPosition() + d +
             f.getAgeGroup() + d +
-            CEC.Decimal(f.getPoints()) + d;
+            CEC.Decimal(f.getPoints()) + d +
+            f.getGroupPosition() + d;
     };
     this.setAsWinner = function () {
         CEC.csvParser.winners[this.getClass()] = this;
@@ -125,6 +133,7 @@ CEC.Summary = function () {
         if (currentAgeGroup.sum < CEC.config.getToSum(row)) {
             currentAgeGroup.points += row.getPoints();
             currentAgeGroup.sum++;
+            row.summaryPos = currentAgeGroup.sum;
         } else {
             currentAgeGroup.excluded++;
         }
@@ -279,6 +288,7 @@ CEC.csvParser =  {
             var summary = new CEC.Summary();
             res.forEach(function (row) {
                 summary.push(row);
+            console.log('row.summaryPos', row.summaryPos);
                 toExport += row.toString() + newLine
             });
 
@@ -357,6 +367,7 @@ CEC.config = {
         excluded: 'fuera',
         sum: 'cant.',
         total: 'TOTAL',
+        sumPos: 'Puesto en edad comunidad',
         points: 'PUNTOS'
     },
     "U-10": {
